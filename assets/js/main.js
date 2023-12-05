@@ -50,6 +50,37 @@ const sr = ScrollReveal({
 //     reset: true
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+    const currentMode = localStorage.getItem('mode');
+
+    // Check if user has a mode preference
+    if (currentMode) {
+        body.classList.add(currentMode);
+    } else {
+        // Check user's system preference and set the mode accordingly
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        body.classList.add(prefersDarkMode ? 'dark-mode' : 'light-mode');
+        localStorage.setItem('mode', prefersDarkMode ? 'dark-mode' : 'light-mode');
+    }
+});
+
+function toggleMode() {
+    const body = document.body;
+    body.classList.toggle('dark-mode');
+    body.classList.toggle('light-mode');
+    const currentMode = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+    localStorage.setItem('mode', currentMode);
+    updateToggleButton();
+   
+}
+
+function updateToggleButton() {
+    const button = document.getElementById('toggle');
+    const currentMode = document.body.classList.contains('dark-mode') ? 'Dark Mode' : 'Light Mode';
+    button.textContent = currentMode;
+}
+
 sr.reveal('.home__data, .about__img, .skills__subtitle, .skills__text',{}); 
 sr.reveal('.home__img, .about__subtitle, .about__text, .skills__img',{delay: 400}); 
 sr.reveal('.home__social-icon',{ interval: 200}); 
